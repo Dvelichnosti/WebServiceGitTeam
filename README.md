@@ -1,5 +1,5 @@
-# Oxygen
-Программное обеспечение для инженерных вычислений, научно-естественных наук, математики и алгоритмов <!-- описание репозитория -->
+# Git Team
+Наш созданный веб сервис с использованием GitFlow и мастерских решений <!-- описание репозитория -->
 <!--Блок информации о репозитории в бейджах-->
 ![Static Badge](https://img.shields.io/badge/OkulusDev-Oxygen-Oxygen)
 ![GitHub top language](https://img.shields.io/github/languages/top/OkulusDev/Oxygen)
