@@ -11,11 +11,11 @@
 
 <!--Установка-->
 ## Установка (Linux)
-У вас должны быть установлены [зависимости проекта](https://github.com/OkulusDev/Oxygen#зависимости)
+У вас должны быть установлены зависимости проекта
 
 1. Клонирование репозитория 
 
-```git clone https://github.com/OkulusDev/Oxygen.git```
+```git clone github.com/Dvelichnosti/WebServiceGitTeam.git```
 
 2. Переход в директорию Oxygen
 
