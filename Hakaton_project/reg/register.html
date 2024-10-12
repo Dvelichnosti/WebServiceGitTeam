@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="reg_style.css">
+</head>
+<body>
+    <div class="container" id="container">
+
+        <div class="form-container register container">
+            <form action="#">
+                <h1>Регистрация</h1>
+                <input type="text" placeholder="Имя" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Пароль" required>
+                <button>Зарегистрироваться</button>
+                <span>У вас уже есть аккаунт?</span>
+                <div class="social container">
+                    <a href="#" class="social"><i class="ini ini-facebook-fill"></i></a>
+                    <a href="#" class="social"><i class="ini ini-google"></i></a>
+                    <a href="#" class="social"><i class="ini ini-linkedin-original"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-container login container">
+            <form action="#">
+                <h1>Вход</h1>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Пароль" required>
+                <div class="content">
+                    <div class="checkbox">
+                        <input type="checkbox" id="checkbox" name="checkbox">
+                        <label for="remember-me"></label>
+                    </div>
+                    <div class="pass-link">
+                        <a href="#">Забыли пароль?</a>
+                    </div>
+                </div>
+                <button>Войти</button>
+                <span>Нет аккаунта?</span>
+                <div class="social container">
+                    <a href="#" class="social"><i class="ini ini-facebook-fill"></i></a>
+                    <a href="#" class="social"><i class="ini ini-google"></i></a>
+                    <a href="#" class="social"><i class="ini ini-linkedin-original"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="title">Здравствуйте <br> друзья</h1>
+                    <p>Войдите в свой аккаунт</p>
+                    <button class="ghost" id="login">Войти
+                        <i class="ini ini-arrow-left login"></i>
+                    </button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Регистрация <br> sad</h1>
+                    <p>Создайте свой аккаунт</p>
+                    <button class="ghost" id="register">Регистрация
+                        <i class="ini ini-arrow-right register"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="reg_script.js"></script>
+    </div>
+</body>
+</html>
