@@ -15,7 +15,7 @@
 
 1. Клонирование репозитория 
 
-```git clone github.com/Dvelichnosti/WebServiceGitTeam.git```
+```git clone //github.com/Dvelichnosti/WebServiceGitTeam.git```
 
 2. Переход в директорию Oxygen
 
