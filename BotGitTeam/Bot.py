@@ -10,18 +10,24 @@ from telegram.ext import (
     ContextTypes,
 ) #импортированные библиотеки
 
+import logging
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TOKEN = "7682952936:AAGjkGlBk45iskGZouGk_ofW53e4DNrRsO0" #тг айди бота
-ADMIN_ID = 5642938812 #тг айди админа
+TOKEN = "7682952936:AAGjkGlBk45iskGZouGk_ofW53e4DNrRsO0"  # ТГ ID бота
+ADMIN_ID = 5642938812  # ТГ ID админа
 
 messages_queue = {}
+user_email_requests = {}
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     keyboard = [
         [KeyboardButton("❗️Частые вопросы"),
-         KeyboardButton("💬Связь с администрацией")]
+         KeyboardButton("💬Связь с администрацией"),
+         KeyboardButton("🔑Восстановить пароль")]
     ]
     
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
@@ -29,7 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def show_questions(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     keyboard = [
-        [KeyboardButton("✅Вопрос 1"), KeyboardButton("✅Вопрос 2")],
+        [KeyboardButton("🛡FAQ"), KeyboardButton("🛡Авторы")],
         [KeyboardButton("🔙Назад")]
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
@@ -41,11 +47,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         if update.message.text == "❗️Частые вопросы":
             await show_questions(update, context)
         elif update.message.text == "💬Связь с администрацией":
-            await context.bot.send_message(chat_id=user_id, text="Напишите ваше сообщение администратору через бота\n❗смотрите в личные сообщения, администратор напишет туда\nили нажмите '🔙Назад' для возврата:", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
-        elif update.message.text == "✅Вопрос 1":
-            await context.bot.send_message(chat_id=user_id, text="Ответ на вопрос 1: Кто же мы такие🧐?\nмы команда GitTeam, 4 подростка, которые увлекаются созданием нового.😊\nМы очень рады представить вам данный проект \n\nНажмите '🔙Назад', чтобы вернуться.", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
-        elif update.message.text == "✅Вопрос 2":
-            await context.bot.send_message(chat_id=user_id, text="Ответ на вопрос 2: Для чего нужен этот бот🧐?\nЭтот бот нужен для обратной связи с нами,\nВ нем вы можете:\nСвязаться с нами, а также найти ответы на нужные вопросы\nНажмите '🔙Назад', чтобы вернуться.", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
+            await context.bot.send_message(chat_id=user_id, text="Напишите ваше сообщение администратору через бота\n❗️смотрите в личные сообщения, администратор напишет туда\nили нажмите '🔙Назад' для возврата:", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
+        elif update.message.text == "🔑Восстановить пароль":
+            user_email_requests[user_id] = True  # Устанавливаем флаг для ожидания почты
+            await context.bot.send_message(chat_id=user_id, text="Пожалуйста, введите вашу почту:")
+        elif update.message.text in user_email_requests and user_email_requests[user_id]:
+            email = update.message.text
+            await context.bot.send_message(chat_id=ADMIN_ID, text=f"Запрос на восстановление пароля от @{update.message.from_user.username}. Почта: {email}")
+            await context.bot.send_message(chat_id=user_id, text="Ваш запрос на восстановление пароля отправлен администратору.")
+            del user_email_requests[user_id]  # Удаляем флаг после обработки
+        elif update.message.text == "🛡FAQ":
+            await context.bot.send_message(chat_id=user_id, text="1.Не открывается какая-либо вкладка сайта?\n✅Вы можете нажать кнопку '💬Связь с администрацией' и описать всю проблему,\n2.Как зарегестрироватьсяn✅Все просто. Заходите на сайт, нажимаете кнопку 'регестрация' и заполняете данные😊\nМы очень рады ответить на все ваши вопросыnЕсли остались вопросы, но тут их нет, свяжитесь с нами через кнопку '💬Связь с администрацией'\n\nНажмите '🔙Назад', чтобы вернуться.", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
+        elif update.message.text == "🛡Авторы":            await context.bot.send_message(chat_id=user_id, text="Авторы:\nИван - Python - Чат-Бот developer\nЯков - Программист Сайта №1\nДмитрий - Программист Сайта №2\nАндрей - Дизайнер Сайта\n\nили нажмите '🔙Назад' для возврата: .", reply_markup=ReplyKeyboardMarkup([[KeyboardButton("🔙Назад")]], resize_keyboard=True, one_time_keyboard=True))
         elif update.message.text == "🔙Назад":
             await start(update, context) 
         else:
@@ -116,13 +129,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
                logger.error(f"Не удалось отправить сообщение пользователю: {e}")
        else:
            await handle_admin_reply(update.message)
-async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    try:
-        await context.bot.send_message(chat_id=ADMIN_ID, text="Сообщение!")
-    except telegram.error.BadRequest as e:
-        print(f"Не удалось отправить сообщение: {e}")
+
 
 
    
